@@ -91,55 +91,60 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 8;
+unsigned int tabspaces = 4;
 
-/* bg opacity */
-float alpha = 0.8;
+/* Background opacity */
+float alpha = 0.9; /* 90% alpha */
+
+/*name 				Dark 	Bright */
+/*Black 		 	0		8 */
+/*Red 				1 		9 */
+/*Green 			2 		10 */
+/*Yellow 			3 		11 */
+/*Blue 				4 		12 */
+/*Magenta 			5 		13 */
+/*Cyan 				6 		14 */
+/*Gray 				7 		15 */
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
+	/* 8 normal colors */
+	"#282a2e", /*Black*/
+	"#a54242",    /*Red*/
+	"#8c9440",  /*Green*/
+	"#de935f", /*Yellow*/
+	"#5f819d",   /*Blue*/
+	"#85678f",/*Magenta*/
+	"#5e8d87",   /*Cyan*/
+	"#99a3ae",  /*White*/
 
-  /* 8 normal colors */
-  [0] = "#000000", /* black   */
-  [1] = "#ff5555", /* red     */
-  [2] = "#50fa7b", /* green   */
-  [3] = "#f1fa8c", /* yellow  */
-  [4] = "#bd93f9", /* blue    */
-  [5] = "#ff79c6", /* magenta */
-  [6] = "#8be9fd", /* cyan    */
-  [7] = "#bbbbbb", /* white   */
+	/* 8 bright colors */
+	"#373b41", /*Black*/
+	"#cc6666",    /*Red*/
+	"#b5bd68",  /*Green*/
+	"#f0c674", /*Yellow*/
+	"#81a2be",/*blue*/
+	"#b294bb",/*Magenta*/
+	"#8abeb7",   /*Cyan*/
+	"#c5c8c6",  /*White*/
 
-  /* 8 bright colors */
-  [8]  = "#44475a", /* black   */
-  [9]  = "#ff5555", /* red     */
-  [10] = "#50fa7b", /* green   */
-  [11] = "#f1fa8c", /* yellow  */
-  [12] = "#bd93f9", /* blue    */
-  [13] = "#ff79c6", /* magenta */
-  [14] = "#8be9fd", /* cyan    */
-  [15] = "#ffffff", /* white   */
+	[255] = 0,
 
-  /* special colors */
-  [256] = "#282a36", /* background */
-  [257] = "#f8f8f2", /* foreground */
+	/* more colors can be added after 255 to use with DefaultXX */
+	"#c5c8c6", /* foreground */
+	"#1d1f21", /* background */
 };
+
 
 /*
  * Default colors (colorname index)
- * foreground, background, cursor
+ * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 257;
-unsigned int defaultbg = 256;
-static unsigned int defaultcs = 257;
+unsigned int defaultfg = 7;
+unsigned int defaultbg = 0;
+static unsigned int defaultcs = 256;
 static unsigned int defaultrcs = 257;
 
-/*
- * Colors used, when the specific fg == defaultfg. So in reverse mode this
- * will reverse too. Another logic would only make the simple feature too
- * complex.
- */
-unsigned int defaultitalic = 7;
-unsigned int defaultunderline = 7;
 /*
  * Default shape of cursor
  * 2: Block ("█")
@@ -153,8 +158,8 @@ static unsigned int cursorshape = 2;
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 80;
-static unsigned int rows = 24;
+static unsigned int cols = 90;
+static unsigned int rows = 27;
 
 /*
  * Default colour and shape of the mouse cursor
@@ -199,8 +204,8 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
+	{ TERMMOD,		        XK_plus,        zoom,           {.f = +1} },
+	{ TERMMOD,    			XK_underscore, zoom,           {.f = -1} },
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
